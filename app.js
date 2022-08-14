@@ -18,14 +18,25 @@ connectDB()
 
 const app = express()
 
+//Body parser
+app.use(express.urlencoded({extended: false}))
+app.use(express.json())
+
+
 //Logging
 if(process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'))
 }
 
+//Handlebars Helpers
+const { formatDate } = require('./helpers/hbs')
+
 //Handlebars
 //!Add the word .engine after exphbs
 app.engine('.hbs', exphbs.engine({
+    helpers: {
+        formatDate,
+    },
     defaultLayout: 'main',
     extname: '.hbs'
     })
